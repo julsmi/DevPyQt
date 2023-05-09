@@ -18,13 +18,94 @@
    в него соответствующие значения
 """
 
-from PySide6 import QtWidgets
+from PySide6 import QtWidgets, QtCore, QtGui
+from PySide6.QtCore import Qt
 
 
 class Window(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.initUi()
+        self.initSignal()
+
+        self.settings = QtCore.QSettings('Data')
+
+    def initUi(self):
+        self.dial = QtWidgets.QDial()
+        self.dial.setRange(0, 100)
+        self.dial.installEventFilter(self)
+        self.comboBox = QtWidgets.QComboBox()
+        self.comboBox.addItem("dec")
+        self.comboBox.addItem("hex")
+        self.comboBox.addItem("oct")
+        self.comboBox.addItem("bin")
+        self.LCDNumber = QtWidgets.QLCDNumber()
+        self.slider = QtWidgets.QSlider()
+        self.slider.setOrientation(Qt.Orientation.Horizontal)
+
+        layout1 = QtWidgets.QVBoxLayout()
+        layout2 = QtWidgets.QHBoxLayout()
+        layout3 = QtWidgets.QVBoxLayout()
+
+        layout1.addWidget(self.comboBox)
+        layout1.addWidget(self.LCDNumber)
+
+        layout2.addWidget(self.dial)
+        layout2.addLayout(layout1)
+
+        layout3.addLayout(layout2)
+        layout3.addWidget(self.slider)
+
+        self.setLayout(layout3)
+
+    def initSignal(self):
+        self.slider.valueChanged.connect(self.dial.setValue)
+        self.slider.valueChanged.connect(self.LCDNumber.display)
+        self.dial.valueChanged.connect(self.slider.setValue)
+        self.dial.valueChanged.connect(self.LCDNumber.display)
+
+        self.comboBox.currentIndexChanged.connect(self.updateLcd)
+
+
+
+    def keyPressEvent(self, event: QtGui.QKeyEvent):
+        if event.key() == QtCore.Qt.Key_Plus:
+            self.dial.setValue(self.dial.value() + 1)
+        elif event.key() == QtCore.Qt.Key_Minus:
+            self.dial.setValue(self.dial.value() - 1)
+        else:
+            super().keyPressEvent(event)
+
+    def updateLcd(self):
+        current_index = self.comboBox.currentIndex()
+
+        if current_index == "Dec":
+            self.LCDNumber.setDecMode()
+            self.LCDNumber.setDigitCount(10)
+            self.LCDNumber.setSmallDecimalPoint(False)
+        elif current_index == "Bin":
+            self.LCDNumber.setBinMode()
+            self.LCDNumber.setDigitCount(32)
+            self.LCDNumber.setSmallDecimalPoint(True)
+        elif current_index == "Oct":
+            self.LCDNumber.setOctMode()
+            self.LCDNumber.setDigitCount(11)
+            self.LCDNumber.setSmallDecimalPoint(False)
+        elif current_index == "Hex":
+            self.LCDNumber.setHexMode()
+            self.LCDNumber.setDigitCount(8)
+            self.LCDNumber.setSmallDecimalPoint(True)
+
+    def loadData(self):
+        self.LCDNumber.display(self.settings.value("Value", ""))
+        self.comboBox.setCurrentText(self.settings.value("Text", ""))
+
+
+    def closeEvent(self, event: QtGui.QCloseEvent):
+        self.settings.setValue("Value", self.LCDNumber.intValue())
+        self.settings.setValue("Text", self.comboBox.currentText())
+
 
 
 if __name__ == "__main__":
