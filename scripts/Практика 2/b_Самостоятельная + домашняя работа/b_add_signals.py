@@ -182,24 +182,15 @@ class Window(QtWidgets.QWidget):
         self.plainTextEditLog.clear()
 
     def comboBoxChanged(self):
-        selectedText = self.comboBox.currentText()
-        self.plainTextEditLog.appendPlainText(f"{selectedText}")
+        self.plainTextEditLog.appendPlainText(self.comboBox.currentText())
 
     def spinBoxChanged(self):
-        selectedValue = self.spinBox.value()
-        self.plainTextEditLog.appendPlainText(f"{selectedValue}")
+        self.plainTextEditLog.appendPlainText(self.spinBox.value())
 
     def dateTimeEditChange(self):
         date = self.dateTimeEdit.date()
         time = self.dateTimeEdit.time()
         self.plainTextEditLog.appendPlainText(f'{date, time}')
-
-
-
-
-
-
-
 
 
 if __name__ == "__main__":

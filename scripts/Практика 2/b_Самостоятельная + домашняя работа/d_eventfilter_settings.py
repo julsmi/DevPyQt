@@ -28,8 +28,8 @@ class Window(QtWidgets.QWidget):
         super().__init__(parent)
         self.initUi()
         self.initSignal()
-
         self.settings = QtCore.QSettings('Data')
+        self.loadData()
 
     def initUi(self):
         self.dial = QtWidgets.QDial()
@@ -65,7 +65,7 @@ class Window(QtWidgets.QWidget):
         self.dial.valueChanged.connect(self.slider.setValue)
         self.dial.valueChanged.connect(self.LCDNumber.display)
 
-        self.comboBox.currentIndexChanged.connect(self.updateLcd)
+        self.comboBox.currentTextChanged.connect(self.updateLcd)
 
 
 
@@ -78,24 +78,18 @@ class Window(QtWidgets.QWidget):
             super().keyPressEvent(event)
 
     def updateLcd(self):
-        current_index = self.comboBox.currentIndex()
-
-        if current_index == "Dec":
+        if self.comboBox.currentText() == "dec":
             self.LCDNumber.setDecMode()
-            self.LCDNumber.setDigitCount(10)
-            self.LCDNumber.setSmallDecimalPoint(False)
-        elif current_index == "Bin":
+
+        elif self.comboBox.currentText() == "bin":
             self.LCDNumber.setBinMode()
-            self.LCDNumber.setDigitCount(32)
-            self.LCDNumber.setSmallDecimalPoint(True)
-        elif current_index == "Oct":
+
+        elif self.comboBox.currentText() == "oct":
             self.LCDNumber.setOctMode()
-            self.LCDNumber.setDigitCount(11)
-            self.LCDNumber.setSmallDecimalPoint(False)
-        elif current_index == "Hex":
+
+        elif self.comboBox.currentText() == "hex":
             self.LCDNumber.setHexMode()
-            self.LCDNumber.setDigitCount(8)
-            self.LCDNumber.setSmallDecimalPoint(True)
+
 
     def loadData(self):
         self.LCDNumber.display(self.settings.value("Value", ""))
