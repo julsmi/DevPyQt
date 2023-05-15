@@ -21,9 +21,6 @@
 """
 
 
-
-
-
 from PySide6 import QtWidgets, QtGui, QtCore
 from ui.c_signals_events import Ui_Form
 import time

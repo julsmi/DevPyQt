@@ -16,6 +16,8 @@ class Window(QtWidgets.QWidget):
         :return: None
         """
 
+
+
         labelLogin = QtWidgets.QLabel("Логин")  # TODO Создайте виджет QLabel с текстом "Логин"
         labelRegistration = QtWidgets.QLabel("Пароль")  # TODO Создайте виджет QLabel с текстом "Регистрация"
 

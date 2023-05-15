@@ -101,7 +101,6 @@ class Window(QtWidgets.QWidget):
         self.settings.setValue("Text", self.comboBox.currentText())
 
 
-
 if __name__ == "__main__":
     app = QtWidgets.QApplication()
 

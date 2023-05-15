@@ -153,6 +153,8 @@ class Window(QtWidgets.QWidget):
         :return: None
         """
 
+
+
         self.plainTextEditLog.setPlainText(self.lineEdit.text())
 
     # TODO Самостоятельная реализация слотов для сигналов
