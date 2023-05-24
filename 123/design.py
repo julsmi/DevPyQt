@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'design.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.0
+## Created by: Qt User Interface Compiler version 6.4.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -82,7 +82,7 @@ class Ui_Form(object):
 
         self.horizontalLayoutWidget_2 = QWidget(Form)
         self.horizontalLayoutWidget_2.setObjectName(u"horizontalLayoutWidget_2")
-        self.horizontalLayoutWidget_2.setGeometry(QRect(10, 280, 249, 41))
+        self.horizontalLayoutWidget_2.setGeometry(QRect(10, 280, 381, 41))
         self.horizontalLayout_3 = QHBoxLayout(self.horizontalLayoutWidget_2)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
@@ -101,6 +101,11 @@ class Ui_Form(object):
         self.pushButton.setObjectName(u"pushButton")
 
         self.horizontalLayout_3.addWidget(self.pushButton)
+
+        self.pushButton_2 = QPushButton(self.horizontalLayoutWidget_2)
+        self.pushButton_2.setObjectName(u"pushButton_2")
+
+        self.horizontalLayout_3.addWidget(self.pushButton_2)
 
         self.plainTextEdit = QPlainTextEdit(Form)
         self.plainTextEdit.setObjectName(u"plainTextEdit")
@@ -123,5 +128,6 @@ class Ui_Form(object):
         self.newNoteButton.setText(QCoreApplication.translate("Form", u"\u041d\u043e\u0432\u0430\u044f \u0437\u0430\u043c\u0435\u0442\u043a\u0430", None))
         self.label_4.setText(QCoreApplication.translate("Form", u"\u0414\u0430\u0442\u0430", None))
         self.pushButton.setText(QCoreApplication.translate("Form", u"\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u0437\u0430\u043c\u0435\u0442\u043a\u0438", None))
+        self.pushButton_2.setText(QCoreApplication.translate("Form", u"\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u0432\u0441\u0435 \u0437\u0430\u043c\u0435\u0442\u043a\u0438", None))
     # retranslateUi
 

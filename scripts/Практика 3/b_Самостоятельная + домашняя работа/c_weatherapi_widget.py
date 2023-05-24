@@ -17,9 +17,11 @@ class WeatherInfoWindow(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.latLineEdit = QtWidgets.QLineEdit()
+        self.latLineEdit = QtWidgets.QDoubleSpinBox()
+        self.latLineEdit.setRange(-100, 100)
         self.latLabel = QtWidgets.QLabel('Широта')
-        self.lonLineEdit = QtWidgets.QLineEdit()
+        self.lonLineEdit = QtWidgets.QDoubleSpinBox()
+        self.lonLineEdit.setRange(-100, 100)
         self.lonLabel = QtWidgets.QLabel('Долгота')
         self.delay = QtWidgets.QLineEdit()
         self.delayLabel = QtWidgets.QLabel('Вермя задержки')
@@ -39,25 +41,20 @@ class WeatherInfoWindow(QtWidgets.QWidget):
         layout.addWidget(self.weatherPushButton)
 
         self.setLayout(layout)
-
-        self.thread_2 = WeatherHandler(self.latLineEdit.text, self.lonLineEdit.text)
-        self.delay.textChanged.connect(self.delayChanged)
-        self.thread_2.data_signal.connect(self.onWeatherPushButton)
-
-
         self.weatherPushButton.clicked.connect(self.onWeatherPushButton)
 
-    def onWeatherPushButton(self, data):
-        lat = self.latLineEdit.text()
-        lon = self.lonLineEdit.text()
-        self.thread_2.lat = float(lat)
-        self.thread_2.lon = float(lon)
+    def onWeatherPushButton(self):
+        self.thread_2 = WeatherHandler(self.latLineEdit.value(), self.lonLineEdit.value())
+        self.thread_2.data_signal.connect(self.getData)
+        self.delay.textChanged.connect(self.delayChanged)
+        self.delay.setEnabled(False)
+        self.thread_2.setStatus(True)
         self.lonLineEdit.setEnabled(False)
         self.latLineEdit.setEnabled(False)
-        self.delay.setEnabled(False)
         self.thread_2.start()
-        self.thread_2.setStatus(True)
-        self.weatherPlainTextLog.setPlainText(str(data))
+
+    def getData(self, data):
+        self.weatherPlainTextLog.appendPlainText(str(data))
 
     def delayChanged(self, value):
         self.thread_2.setDelay(int(value))

@@ -13,7 +13,7 @@ class Widget(QtWidgets.QWidget):
 
         pen = QtGui.QPen()
         pen.setColor(QtCore.Qt.GlobalColor.red)
-        # pen.setBrush(QtCore.Qt.BrushStyle.Dense4Pattern)
+        #pen.setBrush(QtCore.Qt.BrushStyle.Dense4Pattern)
 
         brush = QtGui.QBrush()
         brush.setColor(QtCore.Qt.GlobalColor.green)

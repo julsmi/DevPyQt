@@ -1,7 +1,7 @@
 import datetime
 import json
 
-from PySide6 import QtWidgets, QtGui
+from PySide6 import QtWidgets
 
 from design import Ui_Form
 
@@ -36,12 +36,14 @@ class Window(QtWidgets.QWidget):
         self.ui.delete_Button.clicked.connect(self.deleteNote)
         self.ui.newNoteButton.clicked.connect(self.newNote)
         self.ui.pushButton.clicked.connect(self.showNote)
+        self.ui.pushButton_2.clicked.connect(self.showAllNotes)
 
 
     def newNote(self):
         self.ui.noteHead.clear()
         self.ui.note_Text.clear()
-        self.ui.dateTimeEdit.setDateTime(datetime.datetime.now())
+        self.ui.dateTimeEdit.setDateTime(datetime.datetime.today())
+        self.ui.saveButton.setEnabled(True)
 
     def saveNote(self):
         self.notes[self.get_note_title()] = {
@@ -62,16 +64,32 @@ class Window(QtWidgets.QWidget):
 
     def deleteNote(self, title):
         title = self.get_note_title()
-        for note in self.file['notes']:
-            pass
+        for note in list(self.file['notes'].keys()):
+            if note == title:
+                self.file['notes'].pop(note)
+                self.ui.note_Text.setPlainText('Заметка удалена!')
 
-
+        with open('data.json', 'w', encoding='utf8') as file:
+            self.file = {
+                'notes': self.notes,
+            }
+            json.dump(self.file, file, indent=4)
 
     def showNote(self):
         date = self.ui.dateTimeEdit_2.text()
-        for note in self.file["notes"]:
-            if note["deadline"] == date:
-                self.ui.plainTextEdit.setPlainText(f'Заметки на эту дату:{self.notes["content"]}')
+        flag = False
+        for note, values in self.file["notes"].items():
+            if values["deadline"] == date:
+                self.ui.plainTextEdit.appendPlainText(f'Заметки на эту дату: {values["content"]}')
+                flag = True
+        if not flag:
+            self.ui.plainTextEdit.setPlainText(f'Заметок на эту дату нет!')
+            raise ValueError()
+
+    def showAllNotes(self):
+        for note, values in self.file["notes"].items():
+            if values["content"]:
+                self.ui.plainTextEdit.appendPlainText(f'Нужно сделать: {values["content"]}')
 
 
     def get_note_title(self):
